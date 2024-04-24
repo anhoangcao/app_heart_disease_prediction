@@ -8,15 +8,24 @@ from urllib.parse import quote_plus
 from sklearn.preprocessing import OneHotEncoder
 from datetime import datetime
 
-# MongoDB setup - Should replace with st.secrets for production
-username = "anhoang100402"
-password = "Abc1234"
+# Retrieve the username and password from st.secrets
+username = st.secrets["DB_USERNAME"]
+password = st.secrets["DB_PASSWORD"]
+
+# Use quote_plus to encode the username and password
 username_encoded = quote_plus(username)
 password_encoded = quote_plus(password)
+
+# Format the MongoDB URI with the encoded username and password
 mongo_uri = f"mongodb+srv://{username_encoded}:{password_encoded}@cluster0.qeoxq3z.mongodb.net/?retryWrites=true&w=majority"
+
+# Create a MongoClient object
 client = MongoClient(mongo_uri)
+
+# Access the specific database and collection
 db = client['user_db']  # The database name
 collection = db['information_heart_keys']  # The collection name
+
 
 # Paths to your dataset and model
 DATASET_PATH = "data/heart_2020_cleaned.csv"
